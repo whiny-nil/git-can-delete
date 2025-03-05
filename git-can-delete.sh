@@ -3,7 +3,7 @@ branchToCheck=$1
 startingBranch=`git rev-parse --abbrev-ref HEAD`
 
 git checkout --quiet -b tmp-git-can-delete ${branchToCheck}
-git merge --quiet ${startingBranch}
+git merge --quiet --no-edit ${startingBranch} > /dev/null # this thing won't shut up
 branchDiff=`git diff ${startingBranch}`
 
 echo
