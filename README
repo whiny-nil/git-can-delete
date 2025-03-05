@@ -1,1 +1,31 @@
-TESTasdfasdfa
+# git-can-delete
+
+A simple shell script that tells you if the given branch can be deleted, i.e. if all the code changes in the given branch are contained in the current branch.
+
+## Why?
+
+`git branch -d <branch>` works fine for checking for unmerged work as long as you aren't squash-merging your feature branches into the current branch. If you do, `git branch -d <branch>` will complain because there are commits in your feature branch that don't exist in the current branch.
+
+Because I am paranoid about using `git branch -D <branch>` without checking if it's _really_ okay to delete, I have whipped up this script to do what I used to do manually to check if a branch was fine to delete. Still too scared to automate the delete, though.
+
+## Use
+
+```
+git-can-delete <branch>
+```
+
+This will then report if it's safe to delete or not.
+
+## git Branch Completion (in zsh)
+
+Add this to your `~/.zshrc` file:
+
+```
+_git-can-delete() {
+    local branches
+    branches=($(git branch | sed 's/^[* ]*//' | grep -i "^$words[CURRENT]"))
+    _describe 'branch' branches
+}
+
+compdef _git-can-delete git-can-delete
+```
